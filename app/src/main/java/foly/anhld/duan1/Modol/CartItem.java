@@ -1,26 +1,28 @@
 package foly.anhld.duan1.Modol;
 
 public class CartItem {
-    private String productId;  // Mã sản phẩm
-    private String productName;  // Tên sản phẩm
-    private double price;  // Giá sản phẩm
-    private String size;  // Kích thước sản phẩm
-    private int quantity;  // Số lượng trong giỏ hàng
+    private String productId;
+    private String size;
+    private int quantity;
+    private int availableQuantity;
+    private String productName;
+    private double productPrice;
+    private String productImage;
 
-    // Constructor mặc định
     public CartItem() {
+        // Default constructor required for Firestore
     }
 
-    // Constructor với đầy đủ các thông tin
-    public CartItem(String productId, String productName, double price, int quantity) {
+    public CartItem(String productId, String size, int quantity, int availableQuantity, String productName, double productPrice, String productImage) {
         this.productId = productId;
-        this.productName = productName;
-        this.price = price;
         this.size = size;
         this.quantity = quantity;
+        this.availableQuantity = availableQuantity;
+        this.productName = productName;
+        this.productPrice = productPrice;
+        this.productImage = productImage;
     }
 
-    // Getter và Setter cho mã sản phẩm
     public String getProductId() {
         return productId;
     }
@@ -29,25 +31,6 @@ public class CartItem {
         this.productId = productId;
     }
 
-    // Getter và Setter cho tên sản phẩm
-    public String getProductName() {
-        return productName;
-    }
-
-    public void setProductName(String productName) {
-        this.productName = productName;
-    }
-
-    // Getter và Setter cho giá sản phẩm
-    public double getPrice() {
-        return price;
-    }
-
-    public void setPrice(double price) {
-        this.price = price;
-    }
-
-    // Getter và Setter cho kích thước
     public String getSize() {
         return size;
     }
@@ -56,7 +39,6 @@ public class CartItem {
         this.size = size;
     }
 
-    // Getter và Setter cho số lượng
     public int getQuantity() {
         return quantity;
     }
@@ -64,4 +46,37 @@ public class CartItem {
     public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
+
+    public int getAvailableQuantity() {
+        return availableQuantity;
+    }
+
+    public void setAvailableQuantity(int availableQuantity) {
+        this.availableQuantity = availableQuantity;
+    }
+
+    public String getProductName() {
+        return productName;
+    }
+
+    public void setProductName(String productName) {
+        this.productName = productName;
+    }
+
+    public double getProductPrice() {
+        return productPrice;
+    }
+
+    public void setProductPrice(double productPrice) {
+        this.productPrice = productPrice;
+    }
+
+    public String getProductImage() {
+        return productImage;
+    }
+
+    public void setProductImage(String productImage) {
+        this.productImage = productImage;
+    }
+    // Getters and setters
 }

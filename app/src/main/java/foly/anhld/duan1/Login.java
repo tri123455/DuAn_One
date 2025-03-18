@@ -21,7 +21,7 @@ public class Login extends AppCompatActivity {
     private FirebaseFirestore db;
 
     // Email cố định của người bán datvvph51665@gmail.com
-    private final String SELLER_EMAIL = "trindph53025@gmail.com";
+    private final String SELLER_EMAIL = "trily005@gmail.com";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

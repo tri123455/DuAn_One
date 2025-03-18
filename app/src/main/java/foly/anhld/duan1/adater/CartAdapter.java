@@ -6,10 +6,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -61,7 +64,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
     private void updateTotalPrice() {
         double totalPrice = 0;
         for (CartItem item : cartItems) {
-            totalPrice += item.getPrice() * item.getQuantity();
+            totalPrice += item.getProductPrice() * item.getQuantity();
         }
         totalPriceTextView.setText("Tổng tiền: " + totalPrice + " VND");
     }
@@ -76,6 +79,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
         private final ImageButton removeButton;
         private final ImageButton btnIncrease;
         private final ImageButton btnDecrease;
+        private final ImageView productImage;
 
         public CartViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -87,15 +91,20 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
             removeButton = itemView.findViewById(R.id.btnRemove);
             btnIncrease = itemView.findViewById(R.id.btnIncrease);
             btnDecrease = itemView.findViewById(R.id.btnDecrease);
+            productImage = itemView.findViewById(R.id.ivproductImage);
         }
 
         public void bind(CartItem cartItem) {
             productName.setText(cartItem.getProductName());
-            productPrice.setText("Giá: " + cartItem.getPrice() + " VND");
+            productPrice.setText("Giá: " + cartItem.getProductPrice() + " VND");
             productQuantity.setText("" + cartItem.getQuantity());
             productSize.setText("Size: " + cartItem.getSize());
             productId.setText("Product ID: " + cartItem.getProductId());
-
+            Picasso.get()
+                    .load(cartItem.getProductImage())  // Assuming CartItem has a getProductImageUrl() method
+                    .placeholder(R.drawable.ic_placeholder) // Placeholder image while loading
+                    .error(R.drawable.baseline_email_24) // Error image if loading fails
+                    .into(productImage);
             // Update total price whenever an item is added/removed/quantity changes
             updateTotalPrice();
 

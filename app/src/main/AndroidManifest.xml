@@ -22,7 +22,7 @@
             android:name=".ThongKe_Activyti"
             android:exported="false" />
         <activity
-            android:name=".OrderDetailActivity"
+            android:name=".OrderDetailActivityUser"
             android:exported="false" />
         <activity
             android:name=".CaNhan"

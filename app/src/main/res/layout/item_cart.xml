@@ -9,6 +9,7 @@
 
     <!-- Hình ảnh sản phẩm -->
     <ImageView
+        android:id="@+id/ivproductImage"
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:src="@drawable/icongiay"
@@ -50,14 +51,6 @@
             android:textColor="@android:color/holo_red_dark" />
 
         <TextView
-            android:id="@+id/tvusername"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Người dùng: user"
-            android:textSize="14sp"
-            android:textColor="@android:color/black" />
-
-        <TextView
             android:id="@+id/tvProductid"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -95,7 +88,7 @@
 
             <!-- Nút Giảm -->
             <ImageButton
-                android:id="@+id/btnDecrease"
+                android:id="@+id/btnIncrease"
                 android:layout_width="25dp"
                 android:layout_height="32dp"
                 android:src="@drawable/item_add"
@@ -113,7 +106,7 @@
 
             <!-- Nút Tăng -->
             <ImageButton
-                android:id="@+id/btnIncrease"
+                android:id="@+id/btnDecrease"
                 android:layout_width="20dp"
                 android:layout_height="32dp"
                 android:src="@drawable/item_remove"

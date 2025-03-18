@@ -142,41 +142,67 @@ public class SanPham1 extends AppCompatActivity {
         }
 
         String selectedSizeStr = selectedSize.getSize();
-
-        firestore.collection("giohang").document(userId)
-                .collection("sanpham").document(productId + "_" + selectedSizeStr)
+        firestore.collection("sanpham").document(productId)
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful() && task.getResult() != null) {
                         DocumentSnapshot document = task.getResult();
                         if (document.exists()) {
-                            int currentQuantity = document.getLong("quantity").intValue();
-                            firestore.collection("giohang").document(userId)
-                                    .collection("sanpham").document(productId + "_" + selectedSizeStr)
-                                    .update("quantity", currentQuantity + 1)
-                                    .addOnSuccessListener(aVoid -> {
-                                        Toast.makeText(SanPham1.this, "Đã thêm 1 sản phẩm vào giỏ hàng", Toast.LENGTH_SHORT).show();
-                                        startActivity(new Intent(SanPham1.this, CartActivity.class));
-                                    })
-                                    .addOnFailureListener(e -> {
-                                        Toast.makeText(SanPham1.this, "Thêm sản phẩm thất bại!", Toast.LENGTH_SHORT).show();
-                                    });
+                            SanPham product = document.toObject(SanPham.class);
+
+                            if (product != null) {
+                                // Get the product details to store in the cart
+                                String productName = product.getTenSanPham();
+                                double productPrice = product.getGia(); // Assuming price is in double
+                                String productImage = product.getHinhAnh();
+
+                                // Check if the product is already in the cart
+                                firestore.collection("giohang").document(userId)
+                                        .collection("sanpham").document(productId + "_" + selectedSizeStr)
+                                        .get()
+                                        .addOnCompleteListener(cartTask -> {
+                                            if (cartTask.isSuccessful() && cartTask.getResult() != null) {
+                                                DocumentSnapshot cartDocument = cartTask.getResult();
+                                                if (cartDocument.exists()) {
+                                                    // Update the existing cart item
+                                                    int currentQuantity = cartDocument.getLong("quantity").intValue();
+                                                    firestore.collection("giohang").document(userId)
+                                                            .collection("sanpham").document(productId + "_" + selectedSizeStr)
+                                                            .update("quantity", currentQuantity + 1)
+                                                            .addOnSuccessListener(aVoid -> {
+                                                                Toast.makeText(SanPham1.this, "Đã thêm 1 sản phẩm vào giỏ hàng", Toast.LENGTH_SHORT).show();
+                                                                startActivity(new Intent(SanPham1.this, CartActivity.class));
+                                                            })
+                                                            .addOnFailureListener(e -> {
+                                                                Toast.makeText(SanPham1.this, "Thêm sản phẩm thất bại!", Toast.LENGTH_SHORT).show();
+                                                            });
+                                                } else {
+                                                    // Create a new cart item with all product details
+                                                    CartItem newCartItem = new CartItem(productId, selectedSizeStr, 1, selectedSize.getQuantity(), productName, productPrice, productImage);
+                                                    firestore.collection("giohang").document(userId)
+                                                            .collection("sanpham").document(productId + "_" + selectedSizeStr)
+                                                            .set(newCartItem)
+                                                            .addOnSuccessListener(aVoid -> {
+                                                                Toast.makeText(SanPham1.this, "Đã thêm sản phẩm vào giỏ hàng", Toast.LENGTH_SHORT).show();
+                                                                startActivity(new Intent(SanPham1.this, CartActivity.class));
+                                                            })
+                                                            .addOnFailureListener(e -> {
+                                                                Toast.makeText(SanPham1.this, "Thêm sản phẩm thất bại!", Toast.LENGTH_SHORT).show();
+                                                            });
+                                                }
+                                            } else {
+                                                Toast.makeText(SanPham1.this, "Không thể truy cập giỏ hàng!", Toast.LENGTH_SHORT).show();
+                                            }
+                                        });
+                            }
                         } else {
-                            CartItem newCartItem = new CartItem(productId, selectedSizeStr, 1, selectedSize.getQuantity());  // Default quantity set to 1
-                            firestore.collection("giohang").document(userId)
-                                    .collection("sanpham").document(productId + "_" + selectedSizeStr)
-                                    .set(newCartItem)
-                                    .addOnSuccessListener(aVoid -> {
-                                        Toast.makeText(SanPham1.this, "Đã thêm sản phẩm vào giỏ hàng", Toast.LENGTH_SHORT).show();
-                                        startActivity(new Intent(SanPham1.this, CartActivity.class));
-                                    })
-                                    .addOnFailureListener(e -> {
-                                        Toast.makeText(SanPham1.this, "Thêm sản phẩm thất bại!", Toast.LENGTH_SHORT).show();
-                                    });
+                            Toast.makeText(SanPham1.this, "Không tìm thấy sản phẩm", Toast.LENGTH_SHORT).show();
                         }
                     } else {
-                        Toast.makeText(SanPham1.this, "Không thể truy cập giỏ hàng!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SanPham1.this, "Không thể truy cập sản phẩm!", Toast.LENGTH_SHORT).show();
                     }
                 });
     }
+
+
 }

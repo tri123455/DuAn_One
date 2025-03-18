@@ -44,7 +44,7 @@ public class OrderActivity extends AppCompatActivity {
 
         // Get the current userId from FirebaseAuth
         userId = getIntent().getStringExtra("userId");  // Get userId from Intent or FirebaseAuth
-
+        
         if (userId != null) {
             loadOrders(userId);
         } else {
@@ -56,6 +56,7 @@ public class OrderActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = getIntent();
+                String orderId = getIntent().getStringExtra("ORDER_ID");
                 String source = intent.getStringExtra("source");
                 if ("home".equals(source)) {
                     startActivity(new Intent(OrderActivity.this, Home.class));

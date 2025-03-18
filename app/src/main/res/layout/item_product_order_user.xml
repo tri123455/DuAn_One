@@ -1,0 +1,68 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="8dp"
+    android:background="@drawable/rounded_edit_text"
+    android:gravity="center_vertical"
+    android:layout_marginTop="5dp">
+
+    <ImageView
+        android:id="@+id/ivproductImageuser"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:src="@drawable/icongiay"
+        android:layout_marginEnd="8dp" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tvProductNameuser"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tên sản phẩm"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="@android:color/black"
+            android:ellipsize="end"
+            android:maxLines="1" />
+
+        <TextView
+            android:id="@+id/tvSizeuser"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Size: 39"
+            android:textSize="14sp"
+            android:textColor="@android:color/darker_gray" />
+
+        <TextView
+            android:id="@+id/tvsoluonguser"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="so luong"
+            android:textSize="14sp"
+            android:textColor="@android:color/darker_gray" />
+        <TextView
+            android:id="@+id/tvPriceuser"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="$50.56"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="@android:color/holo_red_dark" />
+
+        <TextView
+            android:id="@+id/tvProductiduser"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Mã sản phẩm: id"
+            android:textSize="14sp"
+            android:textColor="@android:color/black"
+            android:visibility="gone" />
+    </LinearLayout>
+
+</LinearLayout>

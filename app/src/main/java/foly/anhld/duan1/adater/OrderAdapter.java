@@ -8,15 +8,12 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
-import foly.anhld.duan1.Home;
-import foly.anhld.duan1.Login;
 import foly.anhld.duan1.Modol.Order;
-import foly.anhld.duan1.OrderDetailActivity;
+import foly.anhld.duan1.OrderDetailActivityUser;
 import foly.anhld.duan1.R;
 
 public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHolder> {
@@ -50,14 +47,11 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
                 Context context = v.getContext();
 
                 // Tạo Intent và truyền dữ liệu qua putExtra
-                Intent intent = new Intent(context, OrderDetailActivity.class);
+                Intent intent = new Intent(context, OrderDetailActivityUser.class);
                 intent.putExtra("ORDER_ID", order.getOrderId()); // Gửi mã đơn hàng
                 context.startActivity(intent);
             }
         });
-
-
-
     }
 
     @Override

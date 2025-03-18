@@ -163,7 +163,7 @@ public class CartActivity extends AppCompatActivity {
     private void updateTotalPrice(List<CartItem> cartItems) {
         double totalPrice = 0;
         for (CartItem item : cartItems) {
-            totalPrice += item.getPrice() * item.getQuantity();
+            totalPrice += item.getProductPrice() * item.getQuantity();
         }
         totalPriceTextView.setText("Tổng tiền: " + totalPrice + " VND");
     }
@@ -215,21 +215,39 @@ public class CartActivity extends AppCompatActivity {
                 });
     }
     private void showConfirmationDialog() {
-        // Create an AlertDialog to confirm the order
+        // Create a dialog layout with input fields for address, phone number, and recipient's name
+        final View dialogView = getLayoutInflater().inflate(R.layout.dialog_name_sdt, null);
+
+        final TextView edtName = dialogView.findViewById(R.id.edtName);
+        final TextView edtAddress = dialogView.findViewById(R.id.edtAddress);
+        final TextView edtPhoneNumber = dialogView.findViewById(R.id.edtPhoneNumber);
+
+        // Create an AlertDialog to confirm the order with additional fields for name, address, and phone number
         new AlertDialog.Builder(this)
                 .setTitle("Xác nhận đặt hàng")
-                .setMessage("Bạn có chắc chắn muốn đặt đơn hàng không?")
+                .setView(dialogView)
                 .setPositiveButton("Đặt hàng", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        placeOrder(); // Place the order if confirmed
+                        // Get the user input
+                        String name = edtName.getText().toString().trim();
+                        String address = edtAddress.getText().toString().trim();
+                        String phoneNumber = edtPhoneNumber.getText().toString().trim();
+
+                        // Check if all fields are filled
+                        if (name.isEmpty() || address.isEmpty() || phoneNumber.isEmpty()) {
+                            Toast.makeText(CartActivity.this, "Vui lòng điền đầy đủ thông tin!", Toast.LENGTH_SHORT).show();
+                        } else {
+                            // Call placeOrder method with the additional information
+                            placeOrder(name, address, phoneNumber);
+                        }
                     }
                 })
                 .setNegativeButton("Hủy", null) // Do nothing if canceled
                 .show();
     }
 
-    private void placeOrder() {
+    private void placeOrder(String recipientName, String address, String phoneNumber) {
         // Generate a unique order ID
         String orderId = firestore.collection("orders").document().getId();
 
@@ -240,8 +258,8 @@ public class CartActivity extends AppCompatActivity {
         String status = "Pending"; // Initially set the status to "Pending"
         double totalPrice = calculateTotalPrice(); // Calculate total price
 
-        // Tạo đối tượng Order
-        Order order = new Order(orderId, userId, cartItems, orderDate, status, totalPrice);
+        // Tạo đối tượng Order với thông tin người nhận
+        Order order = new Order(orderId, userId, cartItems, orderDate, status, totalPrice, recipientName, address, phoneNumber);
 
         // Lưu thông tin đơn hàng lên Firestore
         firestore.collection("orders")
@@ -256,13 +274,11 @@ public class CartActivity extends AppCompatActivity {
                 });
     }
 
-
-
     private double calculateTotalPrice() {
         double totalPrice = 0;
         if (cartItems != null && !cartItems.isEmpty()) {
             for (CartItem item : cartItems) {
-                totalPrice += item.getPrice() * item.getQuantity();
+                totalPrice += item.getProductPrice() * item.getQuantity();
             }
         } else {
             Log.w("CartActivity", "Giỏ hàng trống hoặc cartItems chưa được tải.");
